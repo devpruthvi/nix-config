@@ -7,6 +7,7 @@
 
 {
   imports = [
+    ../programs/brave
   ];
 
   nixpkgs = {

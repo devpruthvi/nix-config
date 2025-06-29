@@ -107,10 +107,15 @@
       nvpNix = mkNixosConfiguration "nvpNix" "nvp";
     };
 
+    darwinConfigurations = {
+      "nvpMacMini" = mkDarwinConfiguration "nvpMacMini" "nvp";
+    };
+
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
       "nvp@nvpNix" = mkHomeConfiguration "x86_64-linux" "nvp" "nvpNix";
+      "nvp@nvpMacMini" = mkHomeConfiguration "aarch64-darwin" "nvp" "nvpMacMini";
     };
   };
 }

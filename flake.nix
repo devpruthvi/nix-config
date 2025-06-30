@@ -7,6 +7,9 @@
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
+    # Fix Nix installed apps on Mac
+    mac-app-util.url = "github:hraban/mac-app-util";
+
     # Home manager
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -24,6 +27,7 @@
     nixpkgs,
     darwin,
     home-manager,
+    mac-app-util,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -71,6 +75,7 @@
         modules = [
           ./hosts/${hostname}
           home-manager.darwinModules.home-manager
+          mac-app-util.darwinModules.default
         ];
       };
 
@@ -85,7 +90,7 @@
         };
         modules = [
           ./home/${username}/${hostname}
-        ];
+        ] ++ nixpkgs.lib.optionals (nixpkgs.lib.hasSuffix "darwin" system) [ mac-app-util.homeManagerModules.default ];
       };
   in {
     # Your custom packages

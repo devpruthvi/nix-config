@@ -8,6 +8,8 @@
 {
   imports = [
     ../programs/brave
+    ../programs/zsh
+    ../programs/wezterm
   ];
 
   nixpkgs = {

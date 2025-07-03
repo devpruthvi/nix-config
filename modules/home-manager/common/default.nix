@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../programs/brave
+    ../programs/vscode
     ../programs/zsh
     ../programs/btop
     ../programs/bat

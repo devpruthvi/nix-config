@@ -11,6 +11,7 @@
     ../programs/zsh
     ../programs/btop
     ../programs/bat
+    ../programs/fzf
     ../programs/git
     ../programs/lazygit
     ../programs/wezterm
@@ -49,7 +50,7 @@
       else "/home/${userConfig.name}";
   };
 
-  home.packages = with pkgs; [ vscode ];
+  home.packages = with pkgs; [ tree ];
 
   programs.git.enable = true;
 

@@ -9,6 +9,7 @@
   imports = [
     ../programs/brave
     ../programs/zsh
+    ../programs/btop
     ../programs/bat
     ../programs/git
     ../programs/lazygit

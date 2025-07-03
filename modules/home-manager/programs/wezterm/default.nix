@@ -4,5 +4,5 @@
 }: {
     home.packages = with pkgs; [ wezterm ];
 
-    xdg.configFile."wezterm/weztermlua".source = ./wezterm.lua;
+    xdg.configFile."wezterm/wezterm.lua".source = ./wezterm.lua;
 }

@@ -16,6 +16,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Global catppuccin theme
+    catppuccin.url = "github:catppuccin/nix";
+
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,6 +27,7 @@
 
   outputs = {
     self,
+    catppuccin,
     nixpkgs,
     darwin,
     home-manager,
@@ -90,6 +94,7 @@
         };
         modules = [
           ./home/${username}/${hostname}
+          catppuccin.homeModules.catppuccin
         ] ++ nixpkgs.lib.optionals (nixpkgs.lib.hasSuffix "darwin" system) [ mac-app-util.homeManagerModules.default ];
       };
   in {

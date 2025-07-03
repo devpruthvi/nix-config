@@ -10,6 +10,7 @@
     ../programs/brave
     ../programs/zsh
     ../programs/wezterm
+    ../programs/starship
   ];
 
   nixpkgs = {
@@ -50,4 +51,9 @@
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
+
+  catppuccin = {
+    flavor = "macchiato";
+    accent = "lavender";
+  };
 }

@@ -9,6 +9,9 @@
   imports = [
     ../programs/brave
     ../programs/zsh
+    ../programs/bat
+    ../programs/git
+    ../programs/lazygit
     ../programs/wezterm
     ../programs/starship
   ];

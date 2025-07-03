@@ -3,15 +3,14 @@
   userConfig,
   pkgs,
   ...
-}: 
-
-{
+}: {
   imports = [
     ../programs/brave
     ../programs/zsh
     ../programs/btop
     ../programs/bat
     ../programs/fzf
+    ../programs/tmux
     ../programs/git
     ../programs/lazygit
     ../programs/wezterm
@@ -44,13 +43,13 @@
   # User's home env
   home = {
     username = "${userConfig.name}";
-    homeDirectory = 
+    homeDirectory =
       if pkgs.stdenv.isDarwin
       then "/Users/${userConfig.name}"
       else "/home/${userConfig.name}";
   };
 
-  home.packages = with pkgs; [ tree ];
+  home.packages = with pkgs; [tree];
 
   programs.git.enable = true;
 

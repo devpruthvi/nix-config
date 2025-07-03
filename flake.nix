@@ -92,10 +92,12 @@
           userConfig = users.${username};
           hmModules = "${self}/modules/home-manager";
         };
-        modules = [
-          ./home/${username}/${hostname}
-          catppuccin.homeModules.catppuccin
-        ] ++ nixpkgs.lib.optionals (nixpkgs.lib.hasSuffix "darwin" system) [ mac-app-util.homeManagerModules.default ];
+        modules =
+          [
+            ./home/${username}/${hostname}
+            catppuccin.homeModules.catppuccin
+          ]
+          ++ nixpkgs.lib.optionals (nixpkgs.lib.hasSuffix "darwin" system) [mac-app-util.homeManagerModules.default];
       };
   in {
     # Your custom packages

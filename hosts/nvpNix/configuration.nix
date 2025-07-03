@@ -1,9 +1,15 @@
-{ config, lib, pkgs, nixosModules, hostname, ... }:
 {
+  config,
+  lib,
+  pkgs,
+  nixosModules,
+  hostname,
+  ...
+}: {
   imports = [
-      ./hardware-configuration.nix
-      "${nixosModules}/common"
-      "${nixosModules}/desktop/i3"
+    ./hardware-configuration.nix
+    "${nixosModules}/common"
+    "${nixosModules}/desktop/i3"
   ];
 
   # Networking
@@ -27,6 +33,4 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.05"; # DO NOT CHANGE THIS DURING UPGRADE - Did you read the comment?
-
 }
-

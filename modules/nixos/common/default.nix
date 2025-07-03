@@ -1,11 +1,11 @@
-{ 
+{
   inputs,
   outputs,
   lib,
   config,
   userConfig,
-  pkgs, 
-  ... 
+  pkgs,
+  ...
 }: {
   # Nixpkgs configuration
   nixpkgs = {
@@ -40,7 +40,7 @@
     kernelParams = ["quiet" "splash" "rd.udev.log_level=3"];
     plymouth.enable = true;
   };
-  
+
   # Networking
   networking.networkmanager.enable = true;
 
@@ -75,7 +75,7 @@
 
   # PATH configuration
   environment.localBinInPath = true;
-  
+
   # Disable CUPS printing
   services.printing.enable = false;
 
@@ -94,7 +94,7 @@
   users.users.${userConfig.name} = {
     description = userConfig.fullName;
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     shell = pkgs.zsh;
   };
 
@@ -119,4 +119,3 @@
   # OpenSSH daemon
   services.openssh.enable = true;
 }
-

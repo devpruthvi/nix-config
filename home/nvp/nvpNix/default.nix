@@ -1,8 +1,4 @@
-{
-  hmModules,
-  ...
-}: 
-{
+{hmModules, ...}: {
   imports = [
     "${hmModules}/common"
   ];

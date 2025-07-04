@@ -8,6 +8,7 @@
     ../programs/brave
     ../programs/vscode
     ../programs/zsh
+    ../programs/neovim
     ../programs/btop
     ../programs/bat
     ../programs/fzf
@@ -50,7 +51,23 @@
       else "/home/${userConfig.name}";
   };
 
-  home.packages = with pkgs; [tree];
+  home.packages = with pkgs;
+    [
+      tree
+      eza
+      fd
+      jq
+      ripgrep
+      python3
+      pipenv
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      raycast
+    ]
+    ++ lib.optionals (!stdenv.isDarwin) [
+      pavucontrol
+      unzip
+    ];
 
   programs.git.enable = true;
 

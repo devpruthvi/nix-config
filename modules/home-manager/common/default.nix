@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ../programs/aerospace
     ../programs/brave
     ../programs/vscode
     ../programs/zsh

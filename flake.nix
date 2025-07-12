@@ -23,6 +23,21 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Homebrew
+    nix-homebrew = {
+      url = "github:zhaofengli-wip/nix-homebrew";
+    };
+
+    # Optional: Declarative tap management
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -31,6 +46,9 @@
     nixpkgs,
     darwin,
     home-manager,
+    nix-homebrew,
+    homebrew-core,
+    homebrew-cask,
     mac-app-util,
     ...
   } @ inputs: let
@@ -75,11 +93,25 @@
           inherit inputs outputs hostname;
           userConfig = users.${username};
           hmModules = "${self}/modules/home-manager";
+          darwinModules = "${self}/modules/darwin";
         };
         modules = [
           ./hosts/${hostname}
           home-manager.darwinModules.home-manager
           mac-app-util.darwinModules.default
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              user = username;
+              taps = {
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
+              };
+              mutableTaps = false;
+              autoMigrate = true;
+            };
+          }
         ];
       };
 

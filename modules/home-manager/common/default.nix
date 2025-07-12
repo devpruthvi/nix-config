@@ -4,21 +4,25 @@
   pkgs,
   ...
 }: {
-  imports = [
-    ../programs/aerospace
-    ../programs/brave
-    ../programs/vscode
-    ../programs/zsh
-    ../programs/neovim
-    ../programs/btop
-    ../programs/bat
-    ../programs/fzf
-    ../programs/tmux
-    ../programs/git
-    ../programs/lazygit
-    ../programs/wezterm
-    ../programs/starship
-  ];
+  imports =
+    [
+      ../programs/brave
+      ../programs/vscode
+      ../programs/zsh
+      ../programs/neovim
+      ../programs/btop
+      ../programs/bat
+      ../programs/fzf
+      ../programs/tmux
+      ../programs/git
+      ../programs/lazygit
+      ../programs/wezterm
+      ../programs/starship
+    ]
+    ++ [
+      ../programs/aerospace
+      ../programs/homebrew
+    ];
 
   nixpkgs = {
     # You can add overlays here

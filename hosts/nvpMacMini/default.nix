@@ -2,8 +2,13 @@
   pkgs,
   outputs,
   userConfig,
+  darwinModules,
   ...
 }: {
+  imports = [
+    "${darwinModules}/homebrew"
+  ];
+
   # Nixpkgs configuration
   nixpkgs = {
     overlays = [
@@ -31,6 +36,8 @@
     name = "${userConfig.name}";
     home = "/Users/${userConfig.name}";
   };
+
+  system.primaryUser = userConfig.name;
 
   # Add ability to use TouchID for sudo
   security.pam.services.sudo_local.touchIdAuth = true;

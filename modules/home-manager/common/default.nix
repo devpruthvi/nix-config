@@ -21,7 +21,6 @@
     ]
     ++ [
       ../programs/aerospace
-      ../programs/homebrew
     ];
 
   nixpkgs = {

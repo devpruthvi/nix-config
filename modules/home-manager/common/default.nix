@@ -21,6 +21,7 @@
     ]
     ++ [
       ../programs/aerospace
+      ../programs/jankyborders
     ];
 
   nixpkgs = {

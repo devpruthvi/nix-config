@@ -18,6 +18,7 @@
       ../programs/lazygit
       ../programs/wezterm
       ../programs/starship
+      ../programs/ghostty
     ]
     ++ [
       ../programs/aerospace

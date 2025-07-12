@@ -1,0 +1,16 @@
+font-size = 13
+
+theme = light:catppuccin-latte,dark:catppuccin-macchiato
+
+mouse-hide-while-typing = true
+focus-follows-mouse = true
+
+shell-integration = detect
+shell-integration-features = true
+window-inherit-working-directory = true
+window-theme = ghostty
+
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+copy-on-select = true

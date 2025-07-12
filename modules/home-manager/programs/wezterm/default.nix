@@ -1,5 +1,10 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  dotfilesDir,
+  ...
+}: {
   home.packages = with pkgs; [wezterm];
 
-  xdg.configFile."wezterm/wezterm.lua".source = ../../../../dotfiles/.config/wezterm/wezterm.lua;
+  xdg.configFile."wezterm/wezterm.lua".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/wezterm/wezterm.lua";
 }

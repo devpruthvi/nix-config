@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  dotfilesDir,
   ...
 }: {
   programs.neovim = {
@@ -12,11 +13,11 @@
     ];
   };
 
-  # # source lua config from dotfiles
-  # xdg.configFile = {
-  #   "nvim" = {
-  #     source = config.lib.file.mkOutOfStoreSymlink ../../../../dotfiles/.config/nvim;
-  #     recursive = true;
-  #   };
-  # };
+  # source lua config from dotfiles
+  xdg.configFile = {
+    "nvim" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/nvim";
+      recursive = true;
+    };
+  };
 }

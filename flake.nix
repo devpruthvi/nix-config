@@ -123,6 +123,11 @@
           inherit inputs outputs;
           userConfig = users.${username};
           hmModules = "${self}/modules/home-manager";
+          dotfilesDir = "/${
+            if nixpkgs.lib.hasSuffix "darwin" system
+            then "Users"
+            else "home"
+          }/${username}/nix-config/dotfiles";
         };
         modules =
           [

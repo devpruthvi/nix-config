@@ -11,7 +11,11 @@
       aerospace
     ];
 
-    # Source aerospace config from the home-manager store
-    xdg.configFile."aerospace/aerospace.toml".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/aerospace/aerospace.toml";
+    xdg.configFile = {
+      "aerospace" = {
+        source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/aerospace";
+        recursive = true;
+      };
+    };
   };
 }

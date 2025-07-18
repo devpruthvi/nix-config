@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "Running refresh script..."
+
+echo "Downloading dependencies..."
+mkdir -p ~/.config/lsp/java
+wget -O ~/.config/lsp/java/lombok.jar https://projectlombok.org/lombok-edge.jar
+wget -O ~/.config/lsp/java/eclipse-java-google-style.xml https://github.com/google/styleguide/raw/gh-pages/eclipse-java-google-style.xml
+
+echo "Downloding complete!"

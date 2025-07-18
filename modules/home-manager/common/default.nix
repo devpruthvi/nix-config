@@ -20,6 +20,7 @@
       ../programs/starship
       ../programs/ghostty
       ../programs/mise
+      ../programs/personal-scripts
     ]
     ++ [
       ../programs/aerospace
@@ -60,6 +61,7 @@
 
   home.packages = with pkgs;
     [
+      wget
       tree
       eza
       fd

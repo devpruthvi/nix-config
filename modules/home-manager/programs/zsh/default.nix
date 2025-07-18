@@ -1,6 +1,8 @@
 {
+  config,
   lib,
   pkgs,
+  dotfilesDir,
   ...
 }: {
   programs.zsh = {
@@ -19,6 +21,16 @@
       lt = "eza --tree --level=2 --icons"; # tree
     };
 
+    history = {
+      expireDuplicatesFirst = true;
+      ignoreDups = true;
+      ignoreSpace = true;
+      extended = true;
+      share = false;
+      size = 100000;
+      save = 100000;
+    };
+
     initContent = ''
       # bindings
       bindkey -e
@@ -28,6 +40,53 @@
       autoload -z edit-command-line
       zle -N edit-command-line
       bindkey "^e" edit-command-line
+
+      export DOTFILES="$HOME/.dotfiles"
+      export WORKSPACE="$HOME/workspace"
+
+      # Other opts
+      setopt NO_BG_NICE
+      setopt NO_HUP
+      setopt NO_BEEP
+      setopt LOCAL_OPTIONS
+      setopt LOCAL_TRAPS
+      setopt PROMPT_SUBST
+      setopt CORRECT
+      setopt COMPLETE_IN_WORD
+
+      setopt EXTENDED_GLOB       # Needed for file modification glob modifiers with compinit
+      export CLICOLOR=true
+
+      fpath=(${config.xdg.configHome}/zsh/functions(-/FN) $fpath)
+      # functions must be autoloaded, do it in a function to isolate
+      function {
+        local pfunction_glob='^([_.]*|prompt_*_setup|README*|*~)(-.N:t)'
+
+        local pfunction
+        # Extended globbing is needed for listing autoloadable function directories.
+        setopt LOCAL_OPTIONS EXTENDED_GLOB
+
+        for pfunction in ${config.xdg.configHome}/zsh/functions/$~pfunction_glob; do
+          autoload -Uz "$pfunction"
+        done
+      }
+
+      # Load Global Alias config
+      if [ -f $HOME/.aliasrc ]; then
+        source $HOME/.aliasrc
+      fi
+
+      # Load Custom Zsh config, temporary stuff that I don't want to commit goes here
+      if [ -f $HOME/.zshrc.custom ]; then
+        source $HOME/.zshrc.custom
+      fi
     '';
+  };
+
+  xdg.configFile = {
+    "zsh" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/zsh";
+      recursive = true;
+    };
   };
 }

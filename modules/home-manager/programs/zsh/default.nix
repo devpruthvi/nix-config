@@ -32,9 +32,15 @@
     };
 
     initContent = ''
+      source ${pkgs.zsh-fast-syntax-highlighting}/share/zsh/site-functions/fast-syntax-highlighting.plugin.zsh
+      source ${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+      source ${pkgs.zsh-autopair.src}/zsh-autopair.plugin.zsh
+      source ${pkgs.zsh-history-substring-search}/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+
       # bindings
       bindkey -e
       bindkey '^H' backward-delete-word
+      bindkey '^ ' autosuggest-accept
 
       # open commands in $EDITOR with C-e
       autoload -z edit-command-line
@@ -54,7 +60,6 @@
       setopt CORRECT
       setopt COMPLETE_IN_WORD
 
-      setopt EXTENDED_GLOB       # Needed for file modification glob modifiers with compinit
       export CLICOLOR=true
 
       fpath=(${config.xdg.configHome}/zsh/functions(-/FN) $fpath)

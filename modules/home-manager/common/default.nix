@@ -19,6 +19,7 @@
       ../programs/wezterm
       ../programs/starship
       ../programs/ghostty
+      ../programs/mise
     ]
     ++ [
       ../programs/aerospace

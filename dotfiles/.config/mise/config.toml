@@ -1,0 +1,5 @@
+[tools]
+go = "latest"
+rust = "latest"
+node = "latest"
+python = "latest"

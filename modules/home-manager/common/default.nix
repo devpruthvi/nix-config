@@ -25,6 +25,7 @@
     ++ [
       ../programs/aerospace
       ../programs/jankyborders
+      ../programs/sketchybar
     ];
 
   nixpkgs = {

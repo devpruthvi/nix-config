@@ -4,7 +4,14 @@ after-login-command = []
 # 'after-startup-command' is run after 'after-login-command'
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
 after-startup-command = [
+  'exec-and-forget sketchybar',
   'exec-and-forget borders active_color=0xffe1e3e4 inactive_color=0xff494d64 width=5.0'
+]
+
+exec-on-workspace-change = [ 
+  '/bin/bash',
+  '-c',
+  'sketchybar --trigger aerospace_workspace_changed FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE PREV_WORKSPACE=$AEROSPACE_PREV_WORKSPACE'
 ]
 
 # Start AeroSpace at login
@@ -265,11 +272,3 @@ run = 'move-node-to-workspace N'
 
 ####################### /MNEMONICS #########################
 
-# workspace to display assignment
-[workspace-to-monitor-force-assignment]
-T = [1, 'main', 'secondary']
-B = [2, 'secondary', 'main']
-M = [2, 'secondary', 'main']
-I = [2, 'secondary', 'main']
-N = [2, 'secondary', 'main']
-F = [2, 'secondary', 'main']

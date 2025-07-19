@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    "${darwinModules}/homebrew"
+    "${darwinModules}"
   ];
 
   # Nixpkgs configuration

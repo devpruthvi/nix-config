@@ -29,7 +29,7 @@ in {
     home.packages = with pkgs; [
       sketchybar-app-font
       switchaudio-osx
-      nowplaying-cli
+      # nowplaying-cli
     ];
 
     xdg.configFile = {

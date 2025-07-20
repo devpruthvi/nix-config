@@ -14,9 +14,6 @@ with lib;
     [
       gcc
       readline
-    ]
-    ++ lib.optionals stdenv.hostPlatform.isDarwin [
-      darwin.apple_sdk.frameworks.CoreFoundation
     ];
 
     buildPhase = ''

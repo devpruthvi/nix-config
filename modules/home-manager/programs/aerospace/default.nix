@@ -7,15 +7,14 @@
 }: {
   config = lib.mkIf (pkgs.stdenv.isDarwin) {
     # Ensure aerospace package installed
-    home.packages = with pkgs; [
-      aerospace
-    ];
+    programs.aerospace = {
+      enable = true;
 
-    xdg.configFile = {
-      "aerospace" = {
-        source = config.lib.file.mkOutOfStoreSymlink "${dotfilesDir}/.config/aerospace";
-        recursive = true;
-      };
+      userSettings = (builtins.fromTOML (builtins.readFile ./aerospace.toml));
+
+      # Launch on startup
+      launchd.enable = true;
     };
+
   };
 }

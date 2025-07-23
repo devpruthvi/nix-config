@@ -6,6 +6,7 @@
 }: {
   imports =
     [
+      ../programs/vivaldi
       ../programs/brave
       ../programs/vscode
       ../programs/zsh

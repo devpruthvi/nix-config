@@ -1,4 +1,8 @@
-{userConfig, ...}: {
+{
+  pkgs,
+  userConfig,
+  ...
+}: {
   # Install git via home-manager module
   programs.git = {
     enable = true;
@@ -15,6 +19,10 @@
     };
     extraConfig = {
       pull.rebase = "true";
+      credential.helper =
+        if pkgs.stdenv.isDarwin
+        then "osxkeychain"
+        else "cache --timeout=300";
     };
   };
 

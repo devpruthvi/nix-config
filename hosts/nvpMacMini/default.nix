@@ -39,9 +39,6 @@
 
   system.primaryUser = userConfig.name;
 
-  # Add ability to use TouchID for sudo
-  security.pam.services.sudo_local.touchIdAuth = true;
-
   # Zsh configuration
   programs.zsh.enable = true;
 

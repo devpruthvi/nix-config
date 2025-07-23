@@ -8,6 +8,9 @@
       enable = true;
       casks = [
         "pearcleaner"
+        "raycast"
+        "google-chrome"
+        "vivaldi"
 
         # Sketchybar stuff
         "sf-symbols"

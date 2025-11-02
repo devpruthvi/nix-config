@@ -17,6 +17,8 @@
         "font-sketchybar-app-font"
         "font-sf-mono"
         "font-sf-pro"
+
+        "keepingyouawake"
       ];
     };
   };

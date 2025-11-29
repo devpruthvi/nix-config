@@ -26,13 +26,13 @@ end
 local function create_empty_workspace(workspace_name, monitor_id)
     local space = sbar.add("space", workspace_name, {
         position = "left",
-        background = {color = colors.bg1, border_width = 1, height = 26, border_color = colors.black},
+        background = {color = colors.bg1, border_width = 1, height = 26, border_color = colors.bg1},
         icon = {
             string = workspace_name,
             padding_left = 10,
             padding_right = 10,
             color = colors.grey,
-            highlight_color = colors.red
+            highlight_color = colors.accent
         },
         padding_right = 2,
         padding_left = 2,
@@ -40,7 +40,7 @@ local function create_empty_workspace(workspace_name, monitor_id)
             string = "<>",
             padding_right = 20,
             color = colors.grey,
-            highlight_color = colors.grey,
+            highlight_color = colors.fg1,
             font = "sketchybar-app-font:Regular:16.0",
             y_offset = -1,
             drawing = true
@@ -97,18 +97,21 @@ local function update_workspaces()
             icon_strip = table.concat(app_icon_names_list, " ")
         end
 
-        local bg_color, fg_color
+        local bg_color, fg_color, border_color
         if is_visible then
             if is_focused then
-                bg_color = colors.white
-                fg_color = colors.white
+                bg_color = colors.bg2
+                fg_color = colors.accent
+                border_color = colors.accent
             else
-                bg_color = colors.grey
-                fg_color = colors.grey
+                bg_color = colors.bg1
+                fg_color = colors.fg1
+                border_color = colors.bg2
             end
         else
-            bg_color = colors.black
+            bg_color = colors.bg1
             fg_color = colors.grey
+            border_color = colors.bg1
         end
 
         local should_draw = not no_apps or is_visible
@@ -119,7 +122,7 @@ local function update_workspaces()
                 highlight = is_visible,
                 highlight_color = fg_color
             },
-            background = {border_color = bg_color},
+            background = {border_color = border_color, color = bg_color},
             drawing = should_draw,
             display = relevant_spaces[workspace_name] or 1
         })

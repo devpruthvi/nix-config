@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, config, ...}: {
   # Tmux terminal multiplexer configuration
   programs.tmux = {
     enable = true;
@@ -8,7 +8,7 @@
     keyMode = "vi";
     mouse = true;
     sensibleOnTop = false;
-    terminal = "screen-256color";
+    terminal = "tmux-256color";
     plugins = with pkgs; [
       tmuxPlugins.vim-tmux-navigator
       tmuxPlugins.yank
@@ -33,14 +33,28 @@
       # Open a project in a separate window
       bind-key -n C-f run-shell "tmux new-window -t 10 -n project-selector cd-to-project"
 
-      # Apply Tc
+      # Apply Tc and italics
       set -ga terminal-overrides ",xterm-256color:RGB:smcup@:rmcup@"
+      set -as terminal-overrides ',*:sitm=\E[3m'
 
       # Enable focus-events
       set -g focus-events on
 
       # Set default escape-time
       set-option -sg escape-time 10
+
+      # Custom Status Bar with Italics
+      # Replaces Stylix's default which forces noitalics
+      set-option -g status "on"
+      set-option -g status-justify "left"
+      set-option -g status-style "bg=#${config.lib.stylix.colors.base00},fg=#${config.lib.stylix.colors.base05}"
+      set-option -g status-left "#[fg=#${config.lib.stylix.colors.base0D},bg=#${config.lib.stylix.colors.base02},bold,italic] #S #[fg=#${config.lib.stylix.colors.base02},bg=#${config.lib.stylix.colors.base00},nobold,noitalics,nounderscore]"
+      set-option -g status-left-length "80"
+      set-option -g status-right "#[fg=#${config.lib.stylix.colors.base02},bg=#${config.lib.stylix.colors.base00},nobold,nounderscore,noitalics]#[fg=#${config.lib.stylix.colors.base05},bg=#${config.lib.stylix.colors.base02},italic] %Y-%m-%d  %H:%M #[fg=#${config.lib.stylix.colors.base0D},bg=#${config.lib.stylix.colors.base02},nobold,noitalics,nounderscore]#[fg=#${config.lib.stylix.colors.base00},bg=#${config.lib.stylix.colors.base0D},bold,italic] #h "
+      set-option -g status-right-length "80"
+      
+      set-window-option -g window-status-current-format "#[fg=#${config.lib.stylix.colors.base00},bg=#${config.lib.stylix.colors.base0A},nobold,noitalics,nounderscore]#[fg=#${config.lib.stylix.colors.base02},bg=#${config.lib.stylix.colors.base0A},bold,italic] #I  #W#{?window_zoomed_flag,*Z,} #[fg=#${config.lib.stylix.colors.base0A},bg=#${config.lib.stylix.colors.base00},nobold,noitalics,nounderscore]"
+      set-window-option -g window-status-format "#[fg=#${config.lib.stylix.colors.base00},bg=#${config.lib.stylix.colors.base02},noitalics]#[fg=#${config.lib.stylix.colors.base05},bg=#${config.lib.stylix.colors.base02},italic] #I  #W#{?window_zoomed_flag,*Z,} #[fg=#${config.lib.stylix.colors.base02},bg=#${config.lib.stylix.colors.base00},noitalics]"
 
       bind-key -T copy-mode-vi 'C-h' select-pane -L
       bind-key -T copy-mode-vi 'C-j' select-pane -D
@@ -49,21 +63,6 @@
     '';
   };
 
-  # Enable catppuccin theming for tmux.
-  catppuccin = {
-    tmux = {
-      enable = true;
-      extraConfig = ''
-        set -g @catppuccin_flavor "macchiato"
-        set -g @catppuccin_status_background "none"
-
-        set -g @catppuccin_window_current_number_color "#{@thm_peach}"
-        set -g @catppuccin_window_current_text " #W"
-        set -g @catppuccin_window_current_text_color "#{@thm_bg}"
-        set -g @catppuccin_window_number_color "#{@thm_blue}"
-        set -g @catppuccin_window_text " #W"
-        set -g @catppuccin_window_text_color "#{@thm_surface_0}"
-      '';
-    };
-  };
+  # Enable stylix theming for tmux.
+  stylix.targets.tmux.enable = true;
 }

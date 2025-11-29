@@ -5,5 +5,6 @@
   };
 
   # Enable catppuccin theming for bat.
-  catppuccin.bat.enable = true;
+  # Enable stylix theming for bat.
+  stylix.targets.bat.enable = true;
 }

@@ -1,5 +1,6 @@
 {
   pkgs,
+  inputs,
   outputs,
   userConfig,
   darwinModules,
@@ -7,29 +8,11 @@
 }: {
   imports = [
     "${darwinModules}"
+    ../../modules/shared/nix.nix
+    ../../modules/shared/packages.nix
+    ../../modules/shared/nix.nix
+    ../../modules/shared/packages.nix
   ];
-
-  # Nixpkgs configuration
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-    ];
-
-    config = {
-      allowUnfree = true;
-    };
-  };
-
-  # Nix settings
-  nix = {
-    settings = {
-      experimental-features = "nix-command flakes";
-    };
-    optimise.automatic = true;
-    package = pkgs.nix;
-  };
 
   # User configuration
   users.users.${userConfig.name} = {
@@ -37,15 +20,23 @@
     home = "/Users/${userConfig.name}";
   };
 
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = false;
+    users.${userConfig.name} = {
+      imports = [
+        ../../home/${userConfig.name}/nvpMacMini/default.nix
+        inputs.mac-app-util.homeManagerModules.default
+      ];
+    };
+    extraSpecialArgs = {
+      inherit inputs outputs userConfig;
+      hmModules = "${inputs.self}/modules/home-manager";
+      dotfilesDir = "/Users/${userConfig.name}/nix-config/dotfiles";
+    };
+  };
+
   system.primaryUser = userConfig.name;
-
-  # Zsh configuration
-  programs.zsh.enable = true;
-
-  # Fonts configuration
-  fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-  ];
 
   # Used for backwards compatibility, please read the changelog before changing.
   system.stateVersion = 6;

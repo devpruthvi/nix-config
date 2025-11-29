@@ -5,6 +5,8 @@ local config = wezterm.config_builder()
 config.window_background_opacity = 0.87
 config.macos_window_background_blur = 20
 
+config.font = wezterm.font "Iosvmata"
+
 function scheme_for_appearance(appearance)
   if appearance:find "Dark" then
     return "Catppuccin Macchiato"

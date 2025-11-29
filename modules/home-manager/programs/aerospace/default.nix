@@ -10,7 +10,7 @@
     programs.aerospace = {
       enable = true;
 
-      userSettings = builtins.fromTOML (builtins.readFile ./aerospace.toml);
+      settings = builtins.fromTOML (builtins.readFile ./aerospace.toml);
 
       # Launch on startup
       launchd.enable = true;

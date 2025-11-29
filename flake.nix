@@ -16,8 +16,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Global catppuccin theme
-    catppuccin.url = "github:catppuccin/nix";
+
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -42,7 +45,7 @@
 
   outputs = {
     self,
-    catppuccin,
+    stylix,
     nixpkgs,
     darwin,
     home-manager,
@@ -94,6 +97,7 @@
           userConfig = users.${username};
           hmModules = "${self}/modules/home-manager";
           darwinModules = "${self}/modules/darwin";
+          dotfilesDir = "/Users/${username}/nix-config/dotfiles";
         };
         modules = [
           ./hosts/${hostname}
@@ -118,7 +122,17 @@
     # Function for Home Manager configuration
     mkHomeConfiguration = system: username: hostname:
       home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {inherit system;};
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            outputs.overlays.additions
+            outputs.overlays.modifications
+            outputs.overlays.unstable-packages
+          ];
+          config = {
+            allowUnfree = true;
+          };
+        };
         extraSpecialArgs = {
           inherit inputs outputs;
           userConfig = users.${username};
@@ -132,7 +146,6 @@
         modules =
           [
             ./home/${username}/${hostname}
-            catppuccin.homeModules.catppuccin
           ]
           ++ nixpkgs.lib.optionals (nixpkgs.lib.hasSuffix "darwin" system) [mac-app-util.homeManagerModules.default];
       };

@@ -14,3 +14,5 @@ clipboard-read = allow
 clipboard-write = allow
 clipboard-trim-trailing-spaces = true
 copy-on-select = true
+
+custom-shader = /Users/nvp/.config/ghostty/shaders/cursor_warp.glsl

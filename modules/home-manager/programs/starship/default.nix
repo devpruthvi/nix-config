@@ -12,5 +12,6 @@
   };
 
   # Enable catppuccin theming for starship.
-  catppuccin.starship.enable = true;
+  # Enable stylix theming for starship.
+  stylix.targets.starship.enable = true;
 }

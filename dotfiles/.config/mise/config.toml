@@ -3,3 +3,8 @@ go = "latest"
 rust = "latest"
 node = "latest"
 python = "latest"
+
+[settings]
+trusted_config_paths = [
+	"~/.config/mise/config.toml"
+]

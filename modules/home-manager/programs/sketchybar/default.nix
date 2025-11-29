@@ -48,7 +48,7 @@ in {
         -- Add the sketchybar module to the package cpath (the module could be
         -- installed into the default search path then this would not be needed)
         package.cpath = package.cpath .. ";${pkgs.sbar-lua}/lib/sketchybar.so"
-        package.path = package.path .. ";${dotfilesDir}/sketchybar/?.lua;${dotfilesDir}/sketchybar}/?/init.lua"
+        package.path = package.path .. ";${dotfilesDir}/sketchybar/?.lua;${dotfilesDir}/sketchybar/?/init.lua"
 
         sbmenus = "${pkgs.sbmenus}/bin/sbmenus"
 
@@ -56,6 +56,37 @@ in {
         require("init")
       '';
       executable = true;
+    };
+
+    xdg.configFile."sketchybar/colors.lua" = {
+      text = ''
+        return {
+          bg1 = 0xff${config.lib.stylix.colors.base00},
+          bg2 = 0xff${config.lib.stylix.colors.base01},
+          fg1 = 0xff${config.lib.stylix.colors.base05},
+          fg2 = 0xff${config.lib.stylix.colors.base04},
+          accent = 0xff${config.lib.stylix.colors.base0D},
+          red = 0xff${config.lib.stylix.colors.base08},
+          green = 0xff${config.lib.stylix.colors.base0B},
+          yellow = 0xff${config.lib.stylix.colors.base0A},
+          blue = 0xff${config.lib.stylix.colors.base0D},
+          magenta = 0xff${config.lib.stylix.colors.base0E},
+          cyan = 0xff${config.lib.stylix.colors.base0C},
+          white = 0xff${config.lib.stylix.colors.base05},
+          black = 0xff${config.lib.stylix.colors.base00},
+          grey = 0xff${config.lib.stylix.colors.base03},
+          transparent = 0x00000000,
+          
+          bar = {
+            bg = 0xf0${config.lib.stylix.colors.base00}, -- 0xf0 alpha
+            border = 0xff${config.lib.stylix.colors.base01},
+          },
+          popup = {
+            bg = 0xe0${config.lib.stylix.colors.base00},
+            border = 0xff${config.lib.stylix.colors.base01},
+          },
+        }
+      '';
     };
 
     xdg.dataFile = {

@@ -6,18 +6,9 @@
   # Install git via home-manager module
   programs.git = {
     enable = true;
-    userName = userConfig.fullName;
-    userEmail = userConfig.email;
-    delta = {
-      enable = true;
-      options = {
-        keep-plus-minus-markers = true;
-        light = false;
-        line-numbers = true;
-        navigate = true;
-      };
-    };
-    extraConfig = {
+    settings = {
+      user.name = userConfig.fullName;
+      user.email = userConfig.email;
       pull.rebase = "true";
       credential.helper =
         if pkgs.stdenv.isDarwin
@@ -26,6 +17,15 @@
     };
   };
 
-  # Enable catppuccin theming for git delta
-  catppuccin.delta.enable = true;
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      keep-plus-minus-markers = true;
+      light = false;
+      line-numbers = true;
+      navigate = true;
+    };
+  };
+
 }

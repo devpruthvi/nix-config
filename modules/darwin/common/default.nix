@@ -63,6 +63,11 @@
 
       # Disable 'Displys have separate spaces'
       "com.apple.spaces"."spans-displays" = false;
+
+      "com.apple.controlcenter" = {
+        "Bluetooth" = 18;
+        "Sound" = 18;
+      };
     };
 
     "NSGlobalDomain" = {

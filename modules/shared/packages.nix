@@ -33,5 +33,9 @@
   # System-wide packages
   environment.systemPackages = with pkgs; [
     vim
+    home-manager
+    git
+    libxcvt
+    arandr
   ];
 }

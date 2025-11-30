@@ -170,6 +170,7 @@
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
       nvpNix = mkNixosConfiguration "nvpNix" "nvp";
+      "nvp-vm" = mkNixosConfiguration "nvp-vm" "nvp";
     };
 
     darwinConfigurations = {
@@ -181,6 +182,7 @@
     homeConfigurations = {
       "nvp@nvpNix" = mkHomeConfiguration "x86_64-linux" "nvp" "nvpNix";
       "nvp@nvpMacMini" = mkHomeConfiguration "aarch64-darwin" "nvp" "nvpMacMini";
+      "nvp@nvp-vm" = mkHomeConfiguration "aarch64-linux" "nvp" "nvp-vm";
     };
   };
 }

@@ -5,7 +5,7 @@
   dotfilesDir,
   ...
 }: {
-  config = lib.mkIf (pkgs.stdenv.isDarwin) {
+  config = {
     programs.mise = {
       enable = true;
     };

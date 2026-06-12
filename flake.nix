@@ -10,6 +10,10 @@
     # Fix Nix installed apps on Mac
     mac-app-util.url = "github:hraban/mac-app-util";
 
+    # NixOS WSL
+    nixos-wsl.url = "github:nix-community/NixOS-WSL";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
+
     # Home manager
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -53,6 +57,7 @@
     homebrew-core,
     homebrew-cask,
     mac-app-util,
+    nixos-wsl,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -170,6 +175,7 @@
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
       nvpNix = mkNixosConfiguration "nvpNix" "nvp";
+      nvpWSL = mkNixosConfiguration "nvpWSL" "nvp";
       "nvp-vm" = mkNixosConfiguration "nvp-vm" "nvp";
     };
 
@@ -181,6 +187,7 @@
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
       "nvp@nvpNix" = mkHomeConfiguration "x86_64-linux" "nvp" "nvpNix";
+      "nvp@nvpWSL" = mkHomeConfiguration "x86_64-linux" "nvp" "nvpWSL";
       "nvp@nvpMacMini" = mkHomeConfiguration "aarch64-darwin" "nvp" "nvpMacMini";
       "nvp@nvp-vm" = mkHomeConfiguration "aarch64-linux" "nvp" "nvp-vm";
     };

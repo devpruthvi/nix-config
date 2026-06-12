@@ -12,6 +12,23 @@
     plugins = with pkgs; [
       tmuxPlugins.vim-tmux-navigator
       tmuxPlugins.yank
+      {
+        # Save/restore tmux sessions (windows, panes, cwd). Inside nvim,
+        # persistence.nvim restores the editor session for the restored cwd.
+        plugin = tmuxPlugins.resurrect;
+        extraConfig = ''
+          set -g @resurrect-capture-pane-contents 'on'
+        '';
+      }
+      {
+        # Auto-save every 10 min and auto-restore on tmux server start.
+        # Must be the last plugin in the list.
+        plugin = tmuxPlugins.continuum;
+        extraConfig = ''
+          set -g @continuum-restore 'on'
+          set -g @continuum-save-interval '10'
+        '';
+      }
     ];
 
     extraConfig = ''

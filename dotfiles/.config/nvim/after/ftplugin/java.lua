@@ -1,11 +1,11 @@
 local jdtls = require("jdtls")
-local mason_registry = require("mason-registry")
 
 local root_dir = jdtls.setup.find_root({ "gradlew", ".git", "mvnw" })
 
-local jdtls_install_dir = mason_registry.get_package("jdtls"):get_install_path()
-local java_test_path = mason_registry.get_package("java-test"):get_install_path()
-local java_debug_path = mason_registry.get_package("java-debug-adapter"):get_install_path()
+-- mason 2.0 removed Package:get_install_path(); packages live under $MASON
+local jdtls_install_dir = vim.fn.expand("$MASON/packages/jdtls")
+local java_test_path = vim.fn.expand("$MASON/packages/java-test")
+local java_debug_path = vim.fn.expand("$MASON/packages/java-debug-adapter")
 
 local java_home = os.getenv("JAVA_HOME")
 
@@ -25,7 +25,7 @@ jdtls.start_or_attach({
     jdtls.setup_dap({ hotcodereplace = "auto" })
     require("jdtls.dap").setup_dap_main_class_configs()
   end,
-  capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+  capabilities = require("blink.cmp").get_lsp_capabilities(),
   cmd = {
     java_home .. "/bin/java",
     "-javaagent:" .. vim.fn.fnamemodify("~/.config/lsp/java/lombok.jar", ":p"),
@@ -44,7 +44,7 @@ jdtls.start_or_attach({
     "-jar",
     vim.fn.glob(jdtls_install_dir .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
     "-configuration",
-    jdtls_install_dir .. "/config_linux",
+    jdtls_install_dir .. "/config_" .. (vim.fn.has("mac") == 1 and "mac" or "linux"),
     "-data",
     vim.fn.stdpath("cache") .. "/jdtls/nvim-data/" .. vim.fn.fnamemodify(root_dir, ":p:h:t"),
   },

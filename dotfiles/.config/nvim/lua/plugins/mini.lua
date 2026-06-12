@@ -17,6 +17,9 @@ return {
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require("mini.surround").setup()
 
+      -- Auto-pairs (replaces nvim-autopairs)
+      require("mini.pairs").setup()
+
       local statusline = require("mini.statusline")
       statusline.setup({ use_icons = vim.g.have_nerd_font })
       ---@diagnostic disable-next-line: duplicate-set-field
@@ -24,8 +27,7 @@ return {
         return "%2l:%-2v"
       end
 
-      require("mini.starter").setup()
-      require("mini.sessions").setup()
+      -- mini.starter/mini.sessions replaced by snacks.dashboard + persistence.nvim
     end,
   },
 }

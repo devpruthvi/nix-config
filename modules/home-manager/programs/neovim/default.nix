@@ -10,6 +10,11 @@
     defaultEditor = true;
 
     extraPackages = with pkgs; [
+      # nvim-treesitter `main` branch compiles parsers via the tree-sitter CLI
+      tree-sitter
+      # snacks.picker grep/files
+      ripgrep
+      fd
     ];
   };
 

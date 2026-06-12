@@ -39,3 +39,9 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 
 vim.opt.scrolloff = 10
+
+-- Global default border for floating windows (hover, signature, pickers)
+vim.o.winborder = "rounded"
+
+-- What gets saved in sessions (used by persistence.nvim)
+vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }

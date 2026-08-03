@@ -18,9 +18,13 @@
   # Boot settings
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    loader.systemd-boot.enable = true;
+    loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 5;
+      consoleMode = "1";  # Larger font for 4K display
+    };
     loader.efi.canTouchEfiVariables = true;
-    loader.timeout = 0;
+    loader.timeout = 30;
     consoleLogLevel = 0;
     initrd.verbose = false;
     kernelParams = ["quiet" "splash" "rd.udev.log_level=3"];

@@ -8,6 +8,7 @@
     enable = true;
     package = pkgs.neovim-unwrapped;
     defaultEditor = true;
+    sideloadInitLua = true;
 
     extraPackages = with pkgs; [
       # nvim-treesitter `main` branch compiles parsers via the tree-sitter CLI

@@ -27,6 +27,6 @@
 
   xdg.configFile."ghostty/shaders/cursor_warp.glsl".source = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/sahaj-b/ghostty-cursor-shaders/main/cursor_warp.glsl";
-    sha256 = "1qadq5pyiihfc3zima3701d00gczshqycb4q4ipzrj29s3gkm93m";
+    sha256 = "sha256-WJ9x9TfO6JCgfkCPE9Bi/32T3m2fdCyE5L3mEExdUfs=";
   };
 }

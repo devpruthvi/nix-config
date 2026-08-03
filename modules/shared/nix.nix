@@ -27,6 +27,13 @@
     experimental-features = "nix-command flakes";
     auto-optimise-store = pkgs.stdenv.isLinux;
   };
-  
+
   nix.optimise.automatic = pkgs.stdenv.isDarwin;
+
+  # Garbage collection
+  nix.gc = lib.mkIf pkgs.stdenv.isLinux {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
 }

@@ -2,14 +2,13 @@
   config,
   lib,
   pkgs,
-  nixosModules,
   hostname,
   ...
 }: {
   imports = [
     ./hardware-configuration.nix
-    "${nixosModules}/common"
-    "${nixosModules}/desktop/i3"
+    ../../modules/nixos/common
+    ../../modules/nixos/desktop/i3
   ];
 
   # Networking

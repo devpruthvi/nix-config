@@ -3,14 +3,13 @@
   lib,
   pkgs,
   inputs,
-  nixosModules,
   hostname,
   ...
 }: {
   imports = [
     inputs.nixos-wsl.nixosModules.default
-    "${nixosModules}/common"
-    "${nixosModules}/desktop/i3"
+    ../../modules/nixos/common
+    ../../modules/nixos/desktop/i3
   ];
 
   wsl.enable = true;

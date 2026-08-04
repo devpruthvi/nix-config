@@ -5,32 +5,29 @@
   pkgs,
   ...
 }: {
-  imports =
-    [
-      ../programs/vivaldi
-      ../programs/brave
-      ../programs/vscode
-      ../programs/zsh
-      ../programs/neovim
-      ../programs/btop
-      ../programs/bat
-      ../programs/fzf
-      ../programs/tmux
-      ../programs/git
-      ../programs/lazygit
-      ../programs/wezterm
-      ../programs/starship
-      ../programs/ghostty
-      ../programs/mise
-      ../programs/personal-scripts
-    ]
-    ++ [
-      ../programs/aerospace
-      ../programs/jankyborders
-      ../programs/sketchybar
-      ../../shared/stylix.nix
-      inputs.stylix.homeModules.stylix
-    ];
+  imports = [
+    ./local-overlay.nix
+
+    # CLI core — installed on every machine. Everything else (GUI apps,
+    # terminals, macOS desktop bits) is opt-in: import it per host, or use the
+    # `bundles/desktop.nix` bundle. See modules/home-manager/programs/* and the
+    # `homeManagerModules.<name>` flake outputs.
+    ../programs/zsh
+    ../programs/neovim
+    ../programs/git
+    ../programs/lazygit
+    ../programs/tmux
+    ../programs/fzf
+    ../programs/bat
+    ../programs/btop
+    ../programs/starship
+    ../programs/mise
+    ../programs/personal-scripts
+
+    # theming (applies to whatever apps a host does enable)
+    ../../shared/stylix.nix
+    inputs.stylix.homeModules.stylix
+  ];
 
 
   # User's home env

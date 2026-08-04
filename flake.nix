@@ -73,88 +73,14 @@
     # pass to it, with each system as an argument
     forAllSystems = nixpkgs.lib.genAttrs systems;
 
-    # User Configuration
-    users = {
-      nvp = {
-        email = "pruthvi.n.v@gmail.com";
-        fullName = "Pruthvi Raj N V";
-        name = "nvp";
-      };
-    };
-
-    # Function for NixOS system configuration
-    mkNixosConfiguration = hostname: username:
-      nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs outputs hostname;
-          userConfig = users.${username};
-          nixosModules = "${self}/modules/nixos";
-        };
-        modules = [./hosts/${hostname}/configuration.nix];
-      };
-
-    # Function for nix-darwin system configuration
-    mkDarwinConfiguration = hostname: username:
-      darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        specialArgs = {
-          inherit inputs outputs hostname;
-          userConfig = users.${username};
-          hmModules = "${self}/modules/home-manager";
-          darwinModules = "${self}/modules/darwin";
-          dotfilesDir = "/Users/${username}/nix-config/dotfiles";
-        };
-        modules = [
-          ./hosts/${hostname}
-          home-manager.darwinModules.home-manager
-          mac-app-util.darwinModules.default
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              user = username;
-              taps = {
-                "homebrew/homebrew-core" = homebrew-core;
-                "homebrew/homebrew-cask" = homebrew-cask;
-              };
-              mutableTaps = false;
-              autoMigrate = true;
-            };
-          }
-        ];
-      };
-
-    # Function for Home Manager configuration
-    mkHomeConfiguration = system: username: hostname:
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            outputs.overlays.additions
-            outputs.overlays.modifications
-            outputs.overlays.unstable-packages
-          ];
-          config = {
-            allowUnfree = true;
-          };
-        };
-        extraSpecialArgs = {
-          inherit inputs outputs;
-          userConfig = users.${username};
-          hmModules = "${self}/modules/home-manager";
-          dotfilesDir = "/${
-            if nixpkgs.lib.hasSuffix "darwin" system
-            then "Users"
-            else "home"
-          }/${username}/nix-config/dotfiles";
-        };
-        modules =
-          [
-            ./home/${username}/${hostname}
-          ]
-          ++ nixpkgs.lib.optionals (nixpkgs.lib.hasSuffix "darwin" system) [mac-app-util.homeManagerModules.default];
-      };
+    # Reusable system/home builders (mkNixos / mkDarwin / mkHome). Exposed as
+    # `outputs.lib` so a private overlay flake can reuse them for its own hosts.
+    mkConfigs = import ./lib/builders.nix {inherit inputs outputs;};
+    inherit (mkConfigs) mkNixos mkDarwin mkHome;
   in {
+    # Builders, re-exported so wrapping flakes can `personal.lib.mkDarwin {...}`.
+    lib = mkConfigs;
+
     # Your custom packages
     # Accessible through 'nix build', 'nix shell', etc
     packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
@@ -164,32 +90,59 @@
 
     # Your custom packages and modifications, exported as overlays
     overlays = import ./overlays {inherit inputs;};
-    # Reusable nixos modules you might want to export
-    # These are usually stuff you would upstream into nixpkgs
-    nixosModules = import ./modules/nixos;
-    # Reusable home-manager modules you might want to export
-    # These are usually stuff you would upstream into home-manager
-    homeManagerModules = import ./modules/home-manager;
+    # Reusable module aggregators, exported so a wrapping flake can compose them
+    # (e.g. `imports = [ personal.homeManagerModules.default ];`).
+    nixosModules.default = import ./modules/nixos/common;
+    darwinModules.default = import ./modules/darwin;
+
+    # `default` = the CLI core aggregate; `desktop` = the full opt-in GUI bundle;
+    # and every program under modules/home-manager/programs/ is exposed by its
+    # own name, so a wrapping flake can pick apps à la carte, e.g.
+    #   imports = [ personal.homeManagerModules.wezterm ];
+    homeManagerModules =
+      {
+        default = import ./modules/home-manager/common;
+        desktop = import ./modules/home-manager/bundles/desktop.nix;
+      }
+      // (let
+        programsDir = ./modules/home-manager/programs;
+        names =
+          builtins.attrNames
+          (nixpkgs.lib.filterAttrs (_: t: t == "directory") (builtins.readDir programsDir));
+      in
+        nixpkgs.lib.genAttrs names (name: programsDir + "/${name}"));
 
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
-      nvpNix = mkNixosConfiguration "nvpNix" "nvp";
-      nvpWSL = mkNixosConfiguration "nvpWSL" "nvp";
-      "nvp-vm" = mkNixosConfiguration "nvp-vm" "nvp";
+      nvpNix = mkNixos {hostname = "nvpNix";};
+      nvpWSL = mkNixos {hostname = "nvpWSL";};
+      "nvp-vm" = mkNixos {hostname = "nvp-vm";};
     };
 
     darwinConfigurations = {
-      "nvpMacMini" = mkDarwinConfiguration "nvpMacMini" "nvp";
+      "nvpMacMini" = mkDarwin {hostname = "nvpMacMini";};
     };
 
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
-      "nvp@nvpNix" = mkHomeConfiguration "x86_64-linux" "nvp" "nvpNix";
-      "nvp@nvpWSL" = mkHomeConfiguration "x86_64-linux" "nvp" "nvpWSL";
-      "nvp@nvpMacMini" = mkHomeConfiguration "aarch64-darwin" "nvp" "nvpMacMini";
-      "nvp@nvp-vm" = mkHomeConfiguration "aarch64-linux" "nvp" "nvp-vm";
+      "nvp@nvpNix" = mkHome {
+        hostname = "nvpNix";
+        system = "x86_64-linux";
+      };
+      "nvp@nvpWSL" = mkHome {
+        hostname = "nvpWSL";
+        system = "x86_64-linux";
+      };
+      "nvp@nvpMacMini" = mkHome {
+        hostname = "nvpMacMini";
+        system = "aarch64-darwin";
+      };
+      "nvp@nvp-vm" = mkHome {
+        hostname = "nvp-vm";
+        system = "aarch64-linux";
+      };
     };
   };
 }

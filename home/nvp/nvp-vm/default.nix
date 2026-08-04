@@ -1,6 +1,7 @@
-{hmModules, ...}: {
+{...}: {
   imports = [
-    "${hmModules}/common"
+    ../../../modules/home-manager/common
+    ../../../modules/home-manager/bundles/desktop.nix
   ];
 
   programs.home-manager.enable = true;

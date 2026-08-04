@@ -3,13 +3,12 @@
   inputs,
   outputs,
   userConfig,
-  darwinModules,
   ...
 }: {
+  # System-level darwin config only. home-manager is wired up centrally in
+  # lib/builders.nix (mkDarwin), so it must not be configured here.
   imports = [
-    "${darwinModules}"
-    ../../modules/shared/nix.nix
-    ../../modules/shared/packages.nix
+    ../../modules/darwin
     ../../modules/shared/nix.nix
     ../../modules/shared/packages.nix
   ];
@@ -18,22 +17,6 @@
   users.users.${userConfig.name} = {
     name = "${userConfig.name}";
     home = "/Users/${userConfig.name}";
-  };
-
-  home-manager = {
-    useGlobalPkgs = true;
-    useUserPackages = false;
-    users.${userConfig.name} = {
-      imports = [
-        ../../home/${userConfig.name}/nvpMacMini/default.nix
-        inputs.mac-app-util.homeManagerModules.default
-      ];
-    };
-    extraSpecialArgs = {
-      inherit inputs outputs userConfig;
-      hmModules = "${inputs.self}/modules/home-manager";
-      dotfilesDir = "/Users/${userConfig.name}/nix-config/dotfiles";
-    };
   };
 
   system.primaryUser = userConfig.name;

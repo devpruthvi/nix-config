@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   userConfig,
   ...
 }: {
@@ -7,8 +8,10 @@
   programs.git = {
     enable = true;
     settings = {
-      user.name = userConfig.fullName;
-      user.email = userConfig.email;
+      # mkDefault so a wrapping (e.g. work) home module can override the
+      # identity — or add includeIf rules — without needing mkForce.
+      user.name = lib.mkDefault userConfig.fullName;
+      user.email = lib.mkDefault userConfig.email;
       pull.rebase = "true";
       credential.helper =
         if pkgs.stdenv.isDarwin

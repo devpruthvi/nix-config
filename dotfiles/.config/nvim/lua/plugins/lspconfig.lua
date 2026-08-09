@@ -6,7 +6,6 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
-      "mason-org/mason-lspconfig.nvim",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
 
       { "j-hui/fidget.nvim", opts = {} },
@@ -86,19 +85,11 @@ return {
 
       require("mason-tool-installer").setup({
         ensure_installed = {
-          "stylua",
           "jdtls",
         },
       })
 
-      -- mason-lspconfig v2 calls vim.lsp.enable() for every installed server.
-      -- jdtls is excluded as it is started by the after/ftplugin/java.lua via nvim-jdtls.
-      require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "gopls" },
-        automatic_enable = {
-          exclude = { "jdtls" },
-        },
-      })
+      vim.lsp.enable({ "lua_ls", "gopls" })
     end,
   },
 }

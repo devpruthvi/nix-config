@@ -49,6 +49,9 @@
       ripgrep
       python3
       pipenv
+      gcc
+      gnumake
+      pkg-config
     ]
     ++ lib.optionals stdenv.isDarwin [
       raycast

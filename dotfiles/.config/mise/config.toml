@@ -5,6 +5,7 @@ node = "latest"
 python = "latest"
 
 [settings]
+node.compile = false
 trusted_config_paths = [
 	"~/.config/mise/config.toml"
 ]

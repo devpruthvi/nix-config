@@ -94,6 +94,15 @@
     killall
   ];
 
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc.lib
+      zlib
+      openssl
+    ];
+  };
+
   # Additional services
   services.locate.enable = true;
 

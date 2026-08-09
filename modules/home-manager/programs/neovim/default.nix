@@ -8,6 +8,7 @@
   javaRuntimes = {
     "JavaSE-17" = pkgs.jdk17;
     "JavaSE-21" = pkgs.jdk21;
+    "JavaSE-25" = pkgs.jdk25;
   };
 in {
   programs.neovim = {

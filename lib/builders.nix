@@ -59,18 +59,21 @@
 in rec {
   inherit defaultUserConfig;
 
-  # NixOS host. If `hosts/<hostname>/configuration.nix` exists in this repo it is
-  # imported automatically; a wrapping flake for an out-of-repo host passes its
-  # own host module via `extraModules`.
+  # NixOS host, with home-manager wired in so `nixos-rebuild switch` also
+  # activates the per-host home entrypoint. Mirrors mkDarwin's seams.
   mkNixos = {
     hostname,
+    system ? "x86_64-linux",
     username ? defaultUserConfig.name,
     userConfig ? defaultUserConfig,
     extraModules ? [],
+    extraHomeModules ? [],
+    localDotfilesDir ? null,
     # Work-specific package overrides. Merged with the repo's overlays.
     overlays ? [],
   }: let
     hostModule = ../hosts/${hostname}/configuration.nix;
+    homeModule = ../home/${username}/${hostname}/default.nix;
   in
     nixpkgs.lib.nixosSystem {
       specialArgs = {
@@ -79,6 +82,22 @@ in rec {
       modules =
         lib.optional (builtins.pathExists hostModule) hostModule
         ++ lib.optional (overlays != []) {nixpkgs.overlays = overlays;}
+        ++ [
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = false;
+              extraSpecialArgs = {
+                inherit inputs outputs userConfig localDotfilesDir;
+                dotfilesDir = dotfilesDirFor system username;
+              };
+              users.${username}.imports =
+                lib.optional (builtins.pathExists homeModule) homeModule
+                ++ extraHomeModules;
+            };
+          }
+        ]
         ++ extraModules;
     };
 

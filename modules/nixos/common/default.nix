@@ -15,6 +15,9 @@
     ../../shared/stylix.nix
   ];
 
+  # HM modules import stylix themselves; don't auto-import it into HM users too.
+  stylix.homeManagerIntegration.autoImport = false;
+
   # Boot settings
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;

@@ -5,7 +5,7 @@
     };
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs; [dmenu i3status i3blocks xclip xsel autorandr];
+      extraPackages = with pkgs; [dmenu i3status i3blocks xclip xsel autorandr maim];
     };
   };
 

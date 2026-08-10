@@ -2,6 +2,8 @@
   imports = [
     ../../../modules/home-manager/common
     ../../../modules/home-manager/bundles/desktop.nix
+    ../../../modules/home-manager/programs/niri
+    ../../../modules/home-manager/programs/rofi
   ];
 
   programs.home-manager.enable = true;

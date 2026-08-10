@@ -8,6 +8,7 @@
   imports = [
     ../programs/brave
     ../programs/vivaldi
+    ../programs/qutebrowser
     ../programs/vscode
     ../programs/wezterm
     ../programs/ghostty

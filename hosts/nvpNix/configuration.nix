@@ -8,7 +8,7 @@
   imports = [
     ./hardware-configuration.nix
     ../../modules/nixos/common
-    ../../modules/nixos/desktop/i3
+    ../../modules/nixos/desktop/niri
   ];
 
   # Networking

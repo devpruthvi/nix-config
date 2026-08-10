@@ -1,0 +1,106 @@
+# Alt as mod, to match niri.
+set $mod Mod1
+
+font pango:Iosvmata 11
+
+floating_modifier $mod
+
+gaps inner 8
+gaps outer 0
+
+# Launchers
+bindsym $mod+Return exec ghostty
+bindsym $mod+d exec rofi -show drun
+bindsym $mod+Shift+d exec rofi -show run
+bindsym $mod+o exec rofi -show window
+bindsym $mod+Shift+v exec env CM_LAUNCHER=rofi clipmenu
+
+# Window management
+bindsym $mod+Shift+q kill
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+
+# Focus (hjkl)
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Move (Shift+hjkl)
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# hjkl are taken by focus, so split on the bracket keys
+bindsym $mod+bracketleft split h
+bindsym $mod+bracketright split v
+
+bindsym $mod+e layout toggle split
+bindsym $mod+w layout tabbed
+bindsym $mod+s layout stacking
+bindsym $mod+a focus parent
+
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+
+bindsym $mod+Ctrl+k workspace prev
+bindsym $mod+Ctrl+j workspace next
+
+bindsym $mod+Ctrl+h focus output left
+bindsym $mod+Ctrl+l focus output right
+bindsym $mod+Ctrl+Shift+h move container to output left
+bindsym $mod+Ctrl+Shift+l move container to output right
+
+mode "resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+}
+bindsym $mod+r mode "resize"
+
+bindsym Print exec --no-startup-id maim ~/Pictures/Screenshots/screenshot-$(date +%Y-%m-%d-%H-%M-%S).png
+bindsym $mod+Print exec --no-startup-id maim --select ~/Pictures/Screenshots/screenshot-$(date +%Y-%m-%d-%H-%M-%S).png
+
+bindsym XF86AudioRaiseVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
+bindsym XF86AudioLowerVolume exec --no-startup-id wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
+bindsym XF86AudioMute exec --no-startup-id wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
+bindsym XF86AudioNext exec --no-startup-id playerctl next
+bindsym XF86AudioPrev exec --no-startup-id playerctl previous
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+
+bindsym $mod+Shift+x exec --no-startup-id i3lock -c 000000
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3?' -B 'Yes' 'i3-msg exit'"
+
+bar {
+    status_command i3status
+    position top
+    font pango:Iosvmata 11
+}

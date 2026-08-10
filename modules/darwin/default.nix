@@ -3,6 +3,7 @@
     ../shared/nix.nix # nixpkgs overlays + allowUnfree + nix settings (foundational)
     ./common
     ./homebrew
-    ./sketchybar
+    # Disabled: sketchybar removed for now. Re-enable to bring it back.
+    # ./sketchybar
   ];
 }

@@ -15,6 +15,7 @@
     # Disabled: switched to OmniWM. Re-enable to fall back to Aerospace.
     # ../programs/aerospace
     ../programs/jankyborders
-    ../programs/sketchybar
+    # Disabled: sketchybar removed for now. Re-enable to bring it back.
+    # ../programs/sketchybar
   ];
 }

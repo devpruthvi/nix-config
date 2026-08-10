@@ -17,6 +17,7 @@
     nix-homebrew
     homebrew-core
     homebrew-cask
+    homebrew-barutsrb
     mac-app-util
     ;
 
@@ -138,6 +139,7 @@ in rec {
               taps = {
                 "homebrew/homebrew-core" = homebrew-core;
                 "homebrew/homebrew-cask" = homebrew-cask;
+                "barutsrb/homebrew-tap" = homebrew-barutsrb;
               };
               mutableTaps = false;
               autoMigrate = true;

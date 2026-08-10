@@ -45,6 +45,10 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    homebrew-barutsrb = {
+      url = "github:barutsrb/homebrew-tap";
+      flake = false;
+    }
   };
 
   outputs = {
@@ -56,6 +60,7 @@
     nix-homebrew,
     homebrew-core,
     homebrew-cask,
+    homebrew-barutsrb,
     mac-app-util,
     nixos-wsl,
     ...

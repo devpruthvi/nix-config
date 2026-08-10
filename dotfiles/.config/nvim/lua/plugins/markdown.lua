@@ -28,7 +28,7 @@ return {
       workspaces = {
         {
           name = "personal",
-          path = os.getenv("OBSIDIAN_VAULT") or "~/notes/vaults/pruthvi",
+          path = os.getenv("OBSIDIAN_VAULT") or "~/Obsidian/vaults/nvp",
         },
       },
 

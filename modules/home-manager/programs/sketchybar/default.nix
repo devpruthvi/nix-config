@@ -24,13 +24,33 @@ with lib; let
     ps.lua-cjson
     luaposix
   ]);
+
+  omniwmctl = "/opt/homebrew/bin/omniwmctl";
+
+  # Bridges OmniWM IPC events onto a sketchybar custom event (needs "Enable IPC").
+  omniwmBridge = pkgs.writeShellScript "omniwm-sketchybar-bridge" ''
+    ${omniwmctl} subscribe active-workspace,workspace-bar,windows-changed,focus,layout-changed \
+      | while IFS= read -r _; do
+          ${pkgs.sketchybar}/bin/sketchybar --trigger omniwm_update
+        done
+  '';
 in {
   config = lib.mkIf (pkgs.stdenv.isDarwin) {
     home.packages = with pkgs; [
-      sketchybar-app-font
       switchaudio-osx
       # nowplaying-cli
     ];
+
+    launchd.agents.omniwm-sketchybar-bridge = {
+      enable = true;
+      config = {
+        ProgramArguments = ["${omniwmBridge}"];
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/tmp/omniwm-sketchybar-bridge.log";
+        StandardErrorPath = "/tmp/omniwm-sketchybar-bridge.err.log";
+      };
+    };
 
     xdg.configFile = {
       "sketchybar" = {

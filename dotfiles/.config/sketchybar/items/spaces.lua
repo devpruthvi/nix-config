@@ -1,161 +1,164 @@
 local colors = require("colors")
-local icons = require("icons")
 local settings = require("settings")
-local app_icon_names = require("helpers.app_icons")
 
-local aerospace = sbar.aerospace
-local spaces = {}
+local WORKSPACE_CELLS = 12
+local ICONS_PER_CELL = 8
 
-local function contains(list, value)
-    for _, v in ipairs(list) do if v == value then return true end end
-    return false
+local cells = {}
+local target = {}
+
+local function app_image(window)
+    local id = window["bundle-id"]
+    if id == nil or id == "" then id = window.app end
+    if id == nil or id == "" then return nil end
+    return "app." .. id
 end
 
-local function parse_workspace_listing(listing)
-    local workspace_name = listing.workspace
-    local monitor_id = math.floor(listing["monitor-appkit-nsscreen-screens-id"])
-    return workspace_name, monitor_id
-end
-
-local function hide_workspace(workspace_name)
-    if spaces[workspace_name] then
-        sbar.set(spaces[workspace_name], {drawing = false})
+local function unique_app_images(windows)
+    local seen = {}
+    local images = {}
+    for _, window in ipairs(windows) do
+        local image = app_image(window)
+        if image and not seen[image] then
+            seen[image] = true
+            table.insert(images, image)
+        end
     end
+    return images
 end
 
-local function create_empty_workspace(workspace_name, monitor_id)
-    local space = sbar.add("space", workspace_name, {
+local function windows_for(grouped, ws)
+    local candidates = {ws.id, ws.number, ws["raw-name"], ws["display-name"]}
+    for _, key in ipairs(candidates) do
+        if key ~= nil and grouped[key] then return grouped[key] end
+        if key ~= nil and grouped[tostring(key)] then return grouped[tostring(key)] end
+    end
+    return {}
+end
+
+local function state_colors(ws)
+    local visible = ws["is-current"] or ws["is-visible"]
+    if visible then
+        if ws["is-focused"] or ws["is-current"] then
+            return colors.bg2, colors.accent, colors.accent
+        end
+        return colors.bg1, colors.fg1, colors.bg2
+    end
+    return colors.bg1, colors.grey, colors.bg1
+end
+
+local function create_cell(i)
+    local label = sbar.add("item", "space." .. i .. ".label", {
         position = "left",
-        background = {color = colors.bg1, border_width = 1, height = 26, border_color = colors.bg1},
         icon = {
-            string = workspace_name,
-            padding_left = 10,
-            padding_right = 10,
+            string = tostring(i),
+            padding_left = 8,
+            padding_right = 4,
             color = colors.grey,
             highlight_color = colors.accent
         },
-        padding_right = 2,
-        padding_left = 2,
-        label = {
-            string = "<>",
-            padding_right = 20,
-            color = colors.grey,
-            highlight_color = colors.fg1,
-            font = "sketchybar-app-font:Regular:16.0",
-            y_offset = -1,
-            drawing = true
-        },
-        display = monitor_id,
+        label = {drawing = false},
+        background = {drawing = false},
+        padding_left = settings.group_paddings,
+        padding_right = 0,
         drawing = false
     })
-    space:subscribe("mouse.clicked",
-                    function() aerospace:workspace(workspace_name) end)
-    spaces[workspace_name] = space
+    label:subscribe("mouse.clicked", function()
+        sbar.omniwm:focus_workspace(target[i])
+    end)
+
+    local icons = {}
+    local members = {label.name}
+    for j = 1, ICONS_PER_CELL do
+        local icon = sbar.add("item", "space." .. i .. ".icon." .. j, {
+            position = "left",
+            icon = {drawing = false},
+            label = {drawing = false},
+            padding_left = 2,
+            padding_right = 2,
+            background = {
+                drawing = true,
+                color = colors.transparent,
+                border_width = 0,
+                image = {scale = 0.5, drawing = false}
+            },
+            drawing = false
+        })
+        icons[j] = icon
+        table.insert(members, icon.name)
+    end
+
+    local bracket = sbar.add("bracket", "space." .. i .. ".bracket", members, {
+        background = {
+            color = colors.bg1,
+            border_color = colors.bg1,
+            border_width = 1,
+            height = 26
+        },
+        drawing = false
+    })
+
+    cells[i] = {label = label, icons = icons, bracket = bracket}
+end
+
+local function hide_cell(cell)
+    cell.label:set({drawing = false})
+    for _, icon in ipairs(cell.icons) do icon:set({drawing = false}) end
+    cell.bracket:set({drawing = false})
 end
 
 local function update_workspaces()
-    local relevant_spaces = {}
-    aerospace:list_workspaces({"--all"}, function(listing)
-        for _, entry in ipairs(listing) do
-            workspace_name, monitor_id = parse_workspace_listing(entry)
-            relevant_spaces[workspace_name] = monitor_id
-        end
-        for workspace_name in pairs(spaces) do
-            if not relevant_spaces[workspace_name] then
-                -- hide_workspace(workspace_name)
-            end
-        end
-    end)
+    local workspaces = sbar.omniwm:list_workspaces()
+    local grouped = sbar.omniwm:windows_by_workspace()
 
-    local all_windows = aerospace:list_all_windows()
-    local windows_by_workspace = {}
-    for _, window in ipairs(all_windows) do
-        local ws = window.workspace
-        windows_by_workspace[ws] = windows_by_workspace[ws] or {}
-        windows_by_workspace[ws][#windows_by_workspace[ws] + 1] = window
-    end
-
-    local focused_workspace = aerospace:focused_workspace()
-    local visible_spaces = aerospace:list_workspace_names({
-        "--monitor", "all", "--visible"
-    })
-    for workspace_name, entry in pairs(spaces) do
-        local is_focused = workspace_name == focused_workspace
-        local is_visible = contains(visible_spaces, workspace_name)
-        local apps = windows_by_workspace[workspace_name] or {}
-        local no_apps = (#apps == 0)
-        local app_icon_names_set = {}
-        for _, window in ipairs(apps) do
-            app_icon_names_set[app_icon_names[window["app-name"]] or ":default:"] = true
-        end
-        local app_icon_names_list = {}
-        for name in pairs(app_icon_names_set) do
-            table.insert(app_icon_names_list, name)
-        end
-        local icon_strip = "—"
-        if next(app_icon_names_list) ~= nil then
-            icon_strip = table.concat(app_icon_names_list, " ")
-        end
-
-        local bg_color, fg_color, border_color
-        if is_visible then
-            if is_focused then
-                bg_color = colors.bg2
-                fg_color = colors.accent
-                border_color = colors.accent
-            else
-                bg_color = colors.bg1
-                fg_color = colors.fg1
-                border_color = colors.bg2
-            end
+    for i = 1, WORKSPACE_CELLS do
+        local cell = cells[i]
+        local ws = workspaces[i]
+        if not ws then
+            target[i] = nil
+            hide_cell(cell)
         else
-            bg_color = colors.bg1
-            fg_color = colors.grey
-            border_color = colors.bg1
-        end
+            target[i] = ws.id or ws.number
+            local name = ws["display-name"]
+            if name == nil or name == "" then
+                name = tostring(ws.number or ws.id or i)
+            end
 
-        local should_draw = not no_apps or is_visible
-        entry:set({
-            icon = {highlight = is_visible, highlight_color = fg_color},
-            label = {
-                string = icon_strip,
-                highlight = is_visible,
-                highlight_color = fg_color
-            },
-            background = {border_color = border_color, color = bg_color},
-            drawing = should_draw,
-            display = relevant_spaces[workspace_name] or 1
-        })
+            local bg_color, fg_color, border_color = state_colors(ws)
+            local images = unique_app_images(windows_for(grouped, ws))
+
+            cell.label:set({
+                icon = {string = name, color = fg_color},
+                drawing = true
+            })
+            for j = 1, ICONS_PER_CELL do
+                local image = images[j]
+                if image then
+                    cell.icons[j]:set({
+                        background = {image = {string = image, drawing = true}},
+                        drawing = true
+                    })
+                else
+                    cell.icons[j]:set({drawing = false})
+                end
+            end
+            cell.bracket:set({
+                background = {color = bg_color, border_color = border_color},
+                drawing = true
+            })
+        end
     end
 end
 
 local function create_observer()
-    local space_window_observer = sbar.add("item",
-                                           {drawing = false, updates = true})
-    space_window_observer:subscribe("aerospace_workspace_changed", function(env)
-        -- IDEA: Maybe only refine updating to just the new/previous workspaces.
-        -- See https://nikitabobko.github.io/AeroSpace/guide#exec-on-workspace-change-callback.
-        update_workspaces()
-    end)
-    space_window_observer:subscribe("refresh_workspaces",
-                                    function(env) update_workspaces() end)
-    space_window_observer:subscribe("front_app_switched",
-                                    function(env) update_workspaces() end)
-    space_window_observer:subscribe({"system_woke", "reload_aerospace"},
-                                    function(env) sbar.aerospace:reconnect() end)
+    local observer = sbar.add("item", {drawing = false, updates = true})
+    observer:subscribe("omniwm_update", function() update_workspaces() end)
+    observer:subscribe("front_app_switched", function() update_workspaces() end)
+    observer:subscribe("system_woke", function() update_workspaces() end)
 end
 
 local function initialize()
-    -- REVISIT: Creating empty workspaces up front instead of on the fly because
-    -- the Lua API doesn't yet support moving spaces.
-    -- See https://github.com/FelixKratz/SbarLua/issues/11.
-    for i = 1, 10 do create_empty_workspace(tostring(i), 1) end
-    -- List of workspace mnemoics, TODO: find a better way to do this
-    local workspaces = {"T", "B", "F", "I", "M", "N", "O", "Z"}
-
-    for _, name in ipairs(workspaces) do
-        create_empty_workspace(name, 1)
-    end
+    for i = 1, WORKSPACE_CELLS do create_cell(i) end
     update_workspaces()
     create_observer()
 end

@@ -6,6 +6,13 @@
   config = lib.mkIf (pkgs.stdenv.isDarwin) {
     homebrew = {
       enable = true;
+      taps = [
+        "BarutSRB/tap"
+      ];
+      brews = [
+        # OmniWM.app + omniwmctl CLI
+        "omniwm"
+      ];
       casks = [
         "pearcleaner"
         "raycast"
@@ -14,7 +21,6 @@
 
         # Sketchybar stuff
         "sf-symbols"
-        "font-sketchybar-app-font"
         "font-sf-mono"
         "font-sf-pro"
 

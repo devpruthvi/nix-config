@@ -1,12 +1,8 @@
 -- Require the sketchybar module
 sbar = require("sketchybar")
 
-local Aerospace = require("aerospace")
-local aerospace = Aerospace.new()
-while not aerospace:is_initialized() do
-  os.execute("sleep 0.1")
-end
-sbar.aerospace = aerospace
+local Omniwm = require("omniwm")
+sbar.omniwm = Omniwm.new()
 
 -- Set the bar name, if you are using another bar instance than sketchybar
 -- sbar.set_bar_name("bottom_bar")

@@ -12,7 +12,8 @@
     ../programs/vscode
     ../programs/wezterm
     ../programs/ghostty
-    ../programs/aerospace
+    # Disabled: switched to OmniWM. Re-enable to fall back to Aerospace.
+    # ../programs/aerospace
     ../programs/jankyborders
     ../programs/sketchybar
   ];

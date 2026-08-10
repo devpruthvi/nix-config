@@ -6,13 +6,6 @@
   config = lib.mkIf (pkgs.stdenv.isDarwin) {
     homebrew = {
       enable = true;
-      taps = [
-        "BarutSRB/tap"
-      ];
-      brews = [
-        # OmniWM.app + omniwmctl CLI
-        "omniwm"
-      ];
       casks = [
         "pearcleaner"
         "raycast"
@@ -25,6 +18,8 @@
         "font-sf-pro"
 
         "keepingyouawake"
+
+        "omniwm"
       ];
     };
   };

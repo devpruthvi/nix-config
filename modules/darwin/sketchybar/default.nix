@@ -5,7 +5,7 @@
 }: {
   config = {
     services.sketchybar = {
-      enable = true;
+      enable = false;
       package = pkgs.sketchybar;
     };
 

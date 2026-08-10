@@ -48,7 +48,7 @@
     homebrew-barutsrb = {
       url = "github:barutsrb/homebrew-tap";
       flake = false;
-    }
+    };
   };
 
   outputs = {

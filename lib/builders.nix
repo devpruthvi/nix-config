@@ -89,6 +89,7 @@ in rec {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = false;
+              backupFileExtension = "hm-backup";
               extraSpecialArgs = {
                 inherit inputs outputs userConfig localDotfilesDir;
                 dotfilesDir = dotfilesDirFor system username;
@@ -148,6 +149,7 @@ in rec {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = false;
+              backupFileExtension = "hm-backup";
               extraSpecialArgs = {
                 inherit inputs outputs userConfig localDotfilesDir;
                 dotfilesDir = dotfilesDirFor system username;

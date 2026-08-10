@@ -1,5 +1,9 @@
 {pkgs, ...}: let
-  editor = "${pkgs.ghostty}/bin/ghostty";
+  ghostty =
+    if pkgs.stdenv.isDarwin
+    then pkgs.ghostty-bin
+    else pkgs.ghostty;
+  editor = "${ghostty}/bin/ghostty";
 in {
   programs.qutebrowser = {
     enable = true;

@@ -72,7 +72,8 @@
 
     "NSGlobalDomain" = {
       # Don't show the top bar unless moused over
-      _HIHideMenuBar = true;
+      # Enabled until sketchybar is revamped
+      _HIHideMenuBar = false;
 
       # Disable autocorrect
       NSAutomaticCapitalizationEnabled = false;

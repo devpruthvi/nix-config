@@ -289,6 +289,22 @@
         "type": "github"
       }
     },
+    "homebrew-barutsrb": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786733089,
+        "narHash": "sha256-F+aoD1b330ApGu8JKcNDhEw1pt/KRqj9xIBFFnQbQKM=",
+        "owner": "barutsrb",
+        "repo": "homebrew-tap",
+        "rev": "f6735364fa121deedce8617d1c77b0bbce3c2966",
+        "type": "github"
+      },
+      "original": {
+        "owner": "barutsrb",
+        "repo": "homebrew-tap",
+        "type": "github"
+      }
+    },
     "homebrew-cask": {
       "flake": false,
       "locked": {
@@ -539,6 +555,7 @@
       "inputs": {
         "darwin": "darwin",
         "home-manager": "home-manager",
+        "homebrew-barutsrb": "homebrew-barutsrb",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "mac-app-util": "mac-app-util",

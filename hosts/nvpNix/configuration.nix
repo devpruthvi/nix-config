@@ -9,6 +9,7 @@
     ./hardware-configuration.nix
     ../../modules/nixos/common
     ../../modules/nixos/desktop/niri
+    ../../modules/nixos/llm/llamacpp.nix
   ];
 
   # Networking

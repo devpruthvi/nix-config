@@ -4,6 +4,7 @@
     ../../../modules/home-manager/bundles/desktop.nix
     ../../../modules/home-manager/programs/niri
     ../../../modules/home-manager/programs/rofi
+    ../../../modules/home-manager/programs/yazi
   ];
 
   programs.home-manager.enable = true;

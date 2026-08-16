@@ -10,6 +10,7 @@
     ../../modules/nixos/common
     ../../modules/nixos/desktop/niri
     ../../modules/nixos/llm/llamacpp.nix
+    ../../modules/nixos/virtualisation/docker.nix
   ];
 
   # Networking

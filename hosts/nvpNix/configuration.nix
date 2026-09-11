@@ -10,11 +10,17 @@
     ../../modules/nixos/common
     ../../modules/nixos/desktop/niri
     ../../modules/nixos/llm/llamacpp.nix
+    ../../modules/nixos/llm/llm-agents.nix
     ../../modules/nixos/virtualisation/docker.nix
   ];
 
   # Networking
   networking.hostName = hostname;
+
+  # Keep RTC in local time for dual-booting with Windows, sync via NTP
+  time.hardwareClockInLocalTime = true;
+  services.timesyncd.enable = true;
+  time.timeZone = lib.mkForce "America/Los_Angeles";
 
   services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics.enable = true;

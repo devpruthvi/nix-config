@@ -26,6 +26,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # No nixpkgs follows: keeps its own pin so the numtide cache hits.
+    llm-agents.url = "github:numtide/llm-agents.nix";
+
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";

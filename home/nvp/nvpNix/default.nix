@@ -2,6 +2,7 @@
   imports = [
     ../../../modules/home-manager/common
     ../../../modules/home-manager/bundles/desktop.nix
+    ../../../modules/home-manager/programs/dsh
     ../../../modules/home-manager/programs/niri
     ../../../modules/home-manager/programs/rofi
     ../../../modules/home-manager/programs/yazi

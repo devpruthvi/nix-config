@@ -24,13 +24,16 @@
     };
 
     history = {
-      expireDuplicatesFirst = true;
-      ignoreDups = true;
-      ignoreSpace = true;
-      extended = true;
-      share = false;
-      size = 100000;
-      save = 100000;
+      share = true; # SHARE_HISTORY: sync history live across all tabs/tmux panes
+      extended = true; # EXTENDED_HISTORY: store timestamp + duration per entry
+      ignoreDups = true; # HIST_IGNORE_DUPS: drop consecutive duplicate commands
+      ignoreAllDups = true; # HIST_IGNORE_ALL_DUPS: remove older dup when a new one is added
+      ignoreSpace = true; # HIST_IGNORE_SPACE: skip commands starting with a space
+      expireDuplicatesFirst = true; # HIST_EXPIRE_DUPS_FIRST: trim dups first when full
+      saveNoDups = true; # HIST_SAVE_NO_DUPS: never write dups to the history file
+      findNoDups = true; # HIST_FIND_NO_DUPS: skip dups when searching history
+      size = 10000000;
+      save = 10000000;
     };
 
     initContent = ''
@@ -61,6 +64,11 @@
       setopt PROMPT_SUBST
       setopt CORRECT
       setopt COMPLETE_IN_WORD
+
+      # History hygiene (complements programs.zsh.history)
+      setopt HIST_REDUCE_BLANKS   # collapse superfluous whitespace before saving
+      setopt HIST_VERIFY          # show expanded !history before running it
+      setopt HIST_FCNTL_LOCK      # use fcntl locking, safer with shared history across tmux
 
       export CLICOLOR=true
 

@@ -13,6 +13,9 @@
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
+  # Mount removable drives without root (udiskie, yazi mount plugin, keyboard flashing)
+  services.udisks2.enable = true;
+
   # niri has no built-in XWayland; xwayland-satellite is spawned from the niri config.
   environment.systemPackages = [pkgs.xwayland-satellite];
 }

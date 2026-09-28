@@ -16,6 +16,14 @@
     settings.credential.helper = "libsecret";
   };
 
+  # Automount removable drives under /run/media/nvp with a notification
+  services.udiskie = {
+    enable = true;
+    automount = true;
+    notify = true;
+    tray = "auto";
+  };
+
   # ONLY CHANGE THIS AFTER READING: https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "25.05";
 }

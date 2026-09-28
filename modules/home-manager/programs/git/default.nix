@@ -13,10 +13,11 @@
       user.name = lib.mkDefault userConfig.fullName;
       user.email = lib.mkDefault userConfig.email;
       pull.rebase = "true";
-      credential.helper =
+      credential.helper = lib.mkDefault (
         if pkgs.stdenv.isDarwin
         then "osxkeychain"
-        else "cache --timeout=300";
+        else "cache --timeout=300"
+      );
     };
   };
 

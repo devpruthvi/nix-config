@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "adv360-zmk-config": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "zmk-nix": "zmk-nix"
+      },
+      "locked": {
+        "lastModified": 1790569819,
+        "narHash": "sha256-EaSPaAzEjr4WWJixQqrcoBXyqB6Uv+y0VLsvRF9Yy5c=",
+        "owner": "devpruthvi",
+        "repo": "adv360-zmk-config",
+        "rev": "d704d4c1600e37b15260572fcec8d8fe8686dcfe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "devpruthvi",
+        "repo": "adv360-zmk-config",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -645,6 +666,7 @@
     },
     "root": {
       "inputs": {
+        "adv360-zmk-config": "adv360-zmk-config",
         "darwin": "darwin",
         "home-manager": "home-manager",
         "homebrew-barutsrb": "homebrew-barutsrb",
@@ -872,6 +894,27 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "zmk-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "adv360-zmk-config",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1790471284,
+        "narHash": "sha256-qHo9ObOR04Kkm9zxUGrxY3H4gJRML+3Y10k3lCd11Og=",
+        "owner": "lilyinstarlight",
+        "repo": "zmk-nix",
+        "rev": "15827a523c6863e617041a55c4a99127e873568f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lilyinstarlight",
+        "repo": "zmk-nix",
         "type": "github"
       }
     }

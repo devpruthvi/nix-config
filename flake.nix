@@ -10,6 +10,12 @@
     # Fix Nix installed apps on Mac
     mac-app-util.url = "github:hraban/mac-app-util";
 
+    # Kinesis Advantage 360 Pro ZMK config; only its host tools (status CLI, udev rule) are used here
+    adv360-zmk-config = {
+      url = "github:devpruthvi/adv360-zmk-config";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # NixOS WSL
     nixos-wsl.url = "github:nix-community/NixOS-WSL";
     nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";

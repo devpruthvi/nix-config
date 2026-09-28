@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   hostname,
   ...
 }: {
@@ -12,6 +13,8 @@
     ../../modules/nixos/llm/llamacpp.nix
     ../../modules/nixos/llm/llm-agents.nix
     ../../modules/nixos/virtualisation/docker.nix
+    # udev rule so adv360-status can read the keyboard without root
+    inputs.adv360-zmk-config.nixosModules.default
   ];
 
   # Networking
@@ -26,13 +29,6 @@
     enable = true;
     powerOnBoot = true;
   };
-
-  # Let adv360-status read the Advantage 360 Pro's raw HID status over USB and Bluetooth
-  services.udev.packages = [
-    (pkgs.writeTextDir "lib/udev/rules.d/70-adv360.rules" ''
-      KERNEL=="hidraw*", KERNELS=="*:1D50:615E.*", TAG+="uaccess"
-    '')
-  ];
 
   services.xserver.videoDrivers = ["nvidia"];
   hardware.graphics.enable = true;
